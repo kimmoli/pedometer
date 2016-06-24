@@ -1,7 +1,9 @@
 TARGET = pedometer
 
-CONFIG += sailfishapp
 QT += dbus
+
+CONFIG += sailfishapp link_pkgconfig
+PKGCONFIG += sensord-qt5 sailfishapp
 
 DEFINES += "APPVERSION=\\\"$${SPECVERSION}\\\""
 

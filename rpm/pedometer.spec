@@ -17,6 +17,7 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  sensorfw-qt5-devel
+BuildRequires:  pkgconfig(sensord-qt5)
 BuildRequires:  desktop-file-utils
 
 %description
