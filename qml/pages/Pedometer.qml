@@ -34,7 +34,7 @@ Page
             Label
             {
                 x: Theme.paddingLarge
-                text: "Steps " + stepcounter.steps
+                text: stepcounter.steps + " steps"
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeExtraLarge
             }

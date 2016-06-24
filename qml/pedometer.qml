@@ -8,9 +8,12 @@ ApplicationWindow
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: Orientation.All
 
+    property int coverStatus: 0
+
     StepCounter
     {
         id: stepcounter
+        autoUpdate: coverStatus !== Cover.Inactive || applicationActive === true
     }
 }
 

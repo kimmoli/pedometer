@@ -7,7 +7,15 @@ CoverBackground
     {
         id: label
         anchors.centerIn: parent
-        text: "Count comes here"
+        text: stepcounter.steps
+        color: Theme.secondaryHighlightColor
+        font.bold: true
+        font.pixelSize: Theme.fontSizeExtraLarge
+    }
+
+    onStatusChanged:
+    {
+        coverStatus = status
     }
 }
 

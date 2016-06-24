@@ -5,7 +5,7 @@ StepCounter::StepCounter(QObject *parent) :
 {
     emit versionChanged();
 
-    m_current_steps = -1;
+    m_currentSteps = -1;
     emit stepsChanged();
 
     SensorManagerInterface& sm = SensorManagerInterface::instance();
@@ -23,9 +23,8 @@ StepCounter::StepCounter(QObject *parent) :
     {
         sensor->start();
         sensor->setStandbyOverride(true);
-        connect(sensor, SIGNAL(StepCounterChanged(const Unsigned&)), this, SLOT(dataChanged(const Unsigned&)));
-        m_current_steps = sensor->steps().x();
-        emit stepsChanged();
+        setConnected(true);
+        update();
     }
 }
 
@@ -33,21 +32,52 @@ StepCounter::~StepCounter()
 {
     if (sensor)
     {
-        disconnect(sensor, SIGNAL(StepCounterChanged(const Unsigned&)), this, SLOT(dataChanged(const Unsigned&)));
+        setConnected(false);
         sensor->stop();
         delete sensor;
     }
 }
 
+void StepCounter::update()
+{
+    if (sensor)
+    {
+        m_currentSteps = sensor->steps().x();
+        emit stepsChanged();
+    }
+}
+
 void StepCounter::dataChanged(const Unsigned &data)
 {
-    m_current_steps = data.x();
+    m_currentSteps = data.x();
     emit stepsChanged();
 }
 
 int StepCounter::readSteps()
 {
-    return m_current_steps;
+    return m_currentSteps;
+}
+
+void StepCounter::setConnected(const bool &value)
+{
+    if (sensor)
+    {
+        if (value == m_isConnected)
+            return;
+
+        if (value)
+        {
+            update();
+            connect(sensor, SIGNAL(StepCounterChanged(const Unsigned&)), this, SLOT(dataChanged(const Unsigned&)));
+        }
+        else
+        {
+            disconnect(sensor, SIGNAL(StepCounterChanged(const Unsigned&)), this, SLOT(dataChanged(const Unsigned&)));
+        }
+
+        m_isConnected = value;
+        qDebug() << "connected" << value;
+    }
 }
 
 QString StepCounter::readVersion()
